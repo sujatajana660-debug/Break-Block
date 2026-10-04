@@ -270,7 +270,7 @@ fun AdventureGameScreen(
             var showFallbackOverlay by remember { mutableStateOf(false) }
 
             androidx.compose.runtime.LaunchedEffect(Unit) {
-                if (activity != null && UnityAds.isInitialized) {
+                if (activity != null) {
                     UnityAdsManager.showRewardedAd(
                         activity = activity,
                         onRewardGranted = { viewModel.completeGateUnlockAd() },
@@ -296,7 +296,7 @@ fun AdventureGameScreen(
             StreakRewardDialog(
                 levelNumber = uiState.streakRewardLevelNumber,
                 onWatchAdClick = {
-                    if (activity != null && UnityAds.isInitialized) {
+                    if (activity != null) {
                         UnityAdsManager.showRewardedAd(
                             activity = activity,
                             onRewardGranted = { viewModel.claimStreakReward() },
@@ -315,7 +315,7 @@ fun AdventureGameScreen(
             var showFallbackOverlay by remember { mutableStateOf(false) }
 
             androidx.compose.runtime.LaunchedEffect(Unit) {
-                if (activity != null && UnityAds.isInitialized) {
+                if (activity != null) {
                     UnityAdsManager.showInterstitialAd(
                         activity = activity,
                         onAdDismissed = { viewModel.dismissInterstitialAd() }
@@ -338,7 +338,7 @@ fun AdventureGameScreen(
             var showFallbackOverlay by remember { mutableStateOf(false) }
 
             androidx.compose.runtime.LaunchedEffect(Unit) {
-                if (activity != null && UnityAds.isInitialized) {
+                if (activity != null) {
                     UnityAdsManager.showRewardedAd(
                         activity = activity,
                         onRewardGranted = { viewModel.completeReviveAd() },
@@ -390,7 +390,7 @@ fun AdventureGameScreen(
             var showFallbackOverlay by remember { mutableStateOf(false) }
 
             androidx.compose.runtime.LaunchedEffect(Unit) {
-                if (activity != null && UnityAds.isInitialized) {
+                if (activity != null) {
                     UnityAdsManager.showRewardedAd(
                         activity = activity,
                         onRewardGranted = { viewModel.completeBoosterRewardedAd() },

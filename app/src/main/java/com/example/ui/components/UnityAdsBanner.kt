@@ -2,6 +2,7 @@ package com.example.ui.components
 
 import android.app.Activity
 import android.util.Log
+import android.view.ViewGroup
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.animateFloat
@@ -39,9 +40,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.ads.AdConfig
 import com.example.ads.UnityAdsManager
-import com.unity3d.ads.UnityAds
 import com.unity3d.services.banners.BannerErrorInfo
 import com.unity3d.services.banners.BannerView
 import com.unity3d.services.banners.UnityBannerSize
@@ -49,7 +50,7 @@ import com.unity3d.services.banners.UnityBannerSize
 /**
  * Real Unity Ads Banner Component.
  * Integrates directly with Unity Ads SDK (Placement: BP_Banner_Android, Game ID: 800387496).
- * Displays the live banner from Unity Ads, with graceful fallback if no fill is available.
+ * Automatically initializes BannerView as soon as Unity Ads network connection is established.
  */
 @Composable
 fun UnityAdsBanner(
@@ -59,8 +60,18 @@ fun UnityAdsBanner(
 ) {
     val context = LocalContext.current
     val activity = context as? Activity
+    val isAdsInitialized by UnityAdsManager.isInitialized.collectAsStateWithLifecycle()
+
     var isUnityBannerLoaded by remember { mutableStateOf(false) }
     var bannerErrorMessage by remember { mutableStateOf<String?>(null) }
+    var bannerViewRef by remember { mutableStateOf<BannerView?>(null) }
+
+    DisposableEffect(Unit) {
+        onDispose {
+            bannerViewRef?.destroy()
+            bannerViewRef = null
+        }
+    }
 
     val infiniteTransition = rememberInfiniteTransition(label = "banner_pulse")
     val pulseAlpha by infiniteTransition.animateFloat(
@@ -81,7 +92,7 @@ fun UnityAdsBanner(
             .testTag("unity_ads_banner_container"),
         contentAlignment = Alignment.Center
     ) {
-        if (activity != null && UnityAds.isInitialized) {
+        if (activity != null && isAdsInitialized) {
             // Real Unity Ads BannerView
             AndroidView(
                 modifier = Modifier
@@ -92,7 +103,12 @@ fun UnityAdsBanner(
                         activity,
                         placementId,
                         UnityBannerSize(320, 50)
-                    )
+                    ).apply {
+                        layoutParams = ViewGroup.LayoutParams(
+                            ViewGroup.LayoutParams.MATCH_PARENT,
+                            ViewGroup.LayoutParams.MATCH_PARENT
+                        )
+                    }
                     banner.listener = object : BannerView.IListener {
                         override fun onBannerLoaded(bannerAdView: BannerView) {
                             Log.d("UnityAdsBanner", "Unity Banner loaded for $placementId")
@@ -121,15 +137,16 @@ fun UnityAdsBanner(
                         }
                     }
                     banner.load()
+                    bannerViewRef = banner
                     banner
                 },
                 update = { banner ->
-                    // View updated
+                    // Banner maintained in layout
                 }
             )
         }
 
-        // When Unity Banner is not filled yet or loading, show branded placeholder
+        // When Unity Banner is loading or if no fill returned from live ad network, show branded placeholder
         if (!isUnityBannerLoaded) {
             Box(
                 modifier = Modifier
@@ -183,14 +200,14 @@ fun UnityAdsBanner(
                         Spacer(modifier = Modifier.width(10.dp))
                         Column {
                             Text(
-                                text = if (bannerErrorMessage != null) "Unity Ads: $placementId" else "Sponsored Advertisement",
+                                text = "Break Block 2026",
                                 color = Color.White,
                                 fontSize = 12.sp,
                                 fontWeight = FontWeight.Bold
                             )
                             Text(
-                                text = if (bannerErrorMessage != null) bannerErrorMessage!! else "Game ID: $gameId • Live Ad",
-                                color = if (bannerErrorMessage != null) Color(0xFFF59E0B) else Color(0xFF94A3B8),
+                                text = "Sponsored Advertisement",
+                                color = Color(0xFF94A3B8),
                                 fontSize = 10.sp,
                                 fontWeight = FontWeight.Medium
                             )
@@ -204,7 +221,7 @@ fun UnityAdsBanner(
                             .padding(horizontal = 8.dp, vertical = 4.dp)
                     ) {
                         Text(
-                            text = if (isUnityBannerLoaded) "LOADED" else "ACTIVE",
+                            text = if (isUnityBannerLoaded) "SPONSORED" else "AD",
                             color = Color(0xFF34D399),
                             fontSize = 10.sp,
                             fontWeight = FontWeight.Black
