@@ -1,0 +1,59 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt"
+    android:width="120dp"
+    android:height="120dp"
+    android:viewportWidth="120"
+    android:viewportHeight="120">
+
+    <!-- Glowing Disc -->
+    <path
+        android:pathData="M60,10 A50,50 0 1,1 60,110 A50,50 0 1,1 60,10"
+        android:fillColor="#1E293B" />
+    <path
+        android:pathData="M60,10 A50,50 0 1,1 60,110 A50,50 0 1,1 60,10"
+        android:strokeWidth="3"
+        android:strokeColor="#FFD700" />
+
+    <!-- Cup Body -->
+    <path
+        android:pathData="M38,32 h44 v24 c0,12 -10,22 -22,22 c-12,0 -22,-10 -22,-22 Z">
+        <aapt:attr name="android:fillColor">
+            <gradient
+                android:startX="38"
+                android:startY="32"
+                android:endX="82"
+                android:endY="78"
+                android:type="linear">
+                <item android:color="#FDE047" android:offset="0.0" />
+                <item android:color="#EAB308" android:offset="0.5" />
+                <item android:color="#CA8A04" android:offset="1.0" />
+            </gradient>
+        </aapt:attr>
+    </path>
+
+    <!-- Cup Handles -->
+    <path
+        android:pathData="M38,36 C24,36 24,54 38,58"
+        android:strokeWidth="4"
+        android:strokeColor="#EAB308"
+        android:strokeLineCap="round" />
+    <path
+        android:pathData="M82,36 C96,36 96,54 82,58"
+        android:strokeWidth="4"
+        android:strokeColor="#EAB308"
+        android:strokeLineCap="round" />
+
+    <!-- Stem & Base -->
+    <path
+        android:pathData="M56,78 h8 v14 h-8 Z"
+        android:fillColor="#CA8A04" />
+    <path
+        android:pathData="M44,92 h32 v8 h-32 Z"
+        android:fillColor="#EAB308" />
+
+    <!-- Sparkle Star in center -->
+    <path
+        android:pathData="M60,42 L62,49 L69,51 L62,53 L60,60 L58,53 L51,51 L58,49 Z"
+        android:fillColor="#FFFFFF" />
+
+</vector>

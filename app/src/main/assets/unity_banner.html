@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <!-- Unity Ads SDK Script -->
+    <script src="https://services.unityads.unity3d.com/v1/unity-ads.js"></script>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            background-color: transparent;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            width: 100%;
+            height: 100%;
+        }
+        #unity-banner-ad {
+            width: 100%;
+            max-width: 320px;
+            height: 50px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #1E293B 0%, #0F172A 100%);
+            border: 1px solid #334155;
+            color: #E2E8F0;
+            font-size: 12px;
+            font-weight: 700;
+            gap: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        }
+        .ad-badge {
+            background: #F59E0B;
+            color: #0F172A;
+            font-size: 9px;
+            font-weight: 900;
+            padding: 2px 5px;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div id="unity-banner-ad" data-placement-id="BP_Banner_Android">
+        <span class="ad-badge">AD</span>
+        <span>Unity Ads • BP_Banner_Android</span>
+    </div>
+    <script>
+        const UNITY_GAME_ID = "800387496";
+        const UNITY_PLACEMENT = "BP_Banner_Android";
+        if (typeof unityAds !== 'undefined') {
+            try {
+                unityAds.init({
+                    gameId: UNITY_GAME_ID,
+                    testMode: false,
+                    onInitialized: function() {
+                        if (unityAds.loadBanner) {
+                            unityAds.loadBanner({
+                                placementId: UNITY_PLACEMENT,
+                                container: document.getElementById("unity-banner-ad")
+                            });
+                        }
+                    }
+                });
+            } catch (e) {
+                console.error(e);
+            }
+        }
+    </script>
+</body>
+</html>

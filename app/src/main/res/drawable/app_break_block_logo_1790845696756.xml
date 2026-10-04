@@ -1,0 +1,68 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt"
+    android:width="200dp"
+    android:height="200dp"
+    android:viewportWidth="200"
+    android:viewportHeight="200">
+
+    <!-- Background rounded square -->
+    <path
+        android:pathData="M30,10 L170,10 A20,20 0 0,1 190,30 L190,170 A20,20 0 0,1 170,190 L30,190 A20,20 0 0,1 10,170 L10,30 A20,20 0 0,1 30,10 Z">
+        <aapt:attr name="android:fillColor">
+            <gradient
+                android:startX="10"
+                android:startY="10"
+                android:endX="190"
+                android:endY="190"
+                android:type="linear">
+                <item android:color="#1E1B4B" android:offset="0.0" />
+                <item android:color="#0F172A" android:offset="0.5" />
+                <item android:color="#1E293B" android:offset="1.0" />
+            </gradient>
+        </aapt:attr>
+    </path>
+
+    <!-- Outer glowing border -->
+    <path
+        android:pathData="M30,10 L170,10 A20,20 0 0,1 190,30 L190,170 A20,20 0 0,1 170,190 L30,190 A20,20 0 0,1 10,170 L10,30 A20,20 0 0,1 30,10 Z"
+        android:strokeWidth="3"
+        android:strokeColor="#FFD700" />
+
+    <!-- 3D Candy Block Top-Left (Orange) -->
+    <path
+        android:pathData="M45,45 h45 v45 h-45 Z"
+        android:fillColor="#F97316" />
+    <path
+        android:pathData="M45,45 h45 v10 h-45 Z"
+        android:fillColor="#FDBA74" />
+
+    <!-- 3D Candy Block Top-Right (Cyan) -->
+    <path
+        android:pathData="M110,45 h45 v45 h-45 Z"
+        android:fillColor="#06B6D4" />
+    <path
+        android:pathData="M110,45 h45 v10 h-45 Z"
+        android:fillColor="#67E8F9" />
+
+    <!-- 3D Candy Block Bottom-Left (Purple) -->
+    <path
+        android:pathData="M45,110 h45 v45 h-45 Z"
+        android:fillColor="#8B5CF6" />
+    <path
+        android:pathData="M45,110 h45 v10 h-45 Z"
+        android:fillColor="#C4B5FD" />
+
+    <!-- 3D Candy Block Bottom-Right (Gold Yellow) -->
+    <path
+        android:pathData="M110,110 h45 v45 h-45 Z"
+        android:fillColor="#EAB308" />
+    <path
+        android:pathData="M110,110 h45 v10 h-45 Z"
+        android:fillColor="#FDE047" />
+
+    <!-- Center Crown / Star Sparkle -->
+    <path
+        android:pathData="M100,82 L105,95 L118,100 L105,105 L100,118 L95,105 L82,100 L95,95 Z"
+        android:fillColor="#FFFFFF" />
+
+</vector>

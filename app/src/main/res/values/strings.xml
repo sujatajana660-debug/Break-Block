@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Break Blocks</string>
+    <string name="google_app_id" translatable="false">1:1234567890:android:breakblocksapp</string>
+    <string name="gcm_defaultSenderId" translatable="false">1234567890</string>
+    <string name="project_id" translatable="false">break-blocks-app</string>
+    <string name="google_api_key" translatable="false">AIzaSyDummyKeyForGoogleServices123</string>
+</resources>

@@ -1,0 +1,6 @@
+{
+  "name": "Break Blocks",
+  "description": "Break Blocks - Block Blast style block puzzle game with Classic & Adventure modes, combos, vibrant graphics, and sound effects.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

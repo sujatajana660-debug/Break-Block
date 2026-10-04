@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Break Blocks - Unity Ads</title>
+    <!-- Unity Ads SDK Script -->
+    <script src="https://services.unityads.unity3d.com/v1/unity-ads.js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: #0F172A;
+            color: #FFF;
+            font-family: sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            min-height: 100vh;
+        }
+        #banner-ad-container {
+            width: 100%;
+            max-width: 320px;
+            height: 50px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #1E293B;
+            border-radius: 8px;
+            border: 1px solid #334155;
+        }
+    </style>
+</head>
+<body>
+    <div style="padding: 20px; text-align: center;">
+        <h2>Break Blocks</h2>
+        <p>Unity Ads Game ID: 800387496</p>
+    </div>
+    <!-- Unity Banner Ad Placement -->
+    <div id="banner-ad-container" data-placement="Banner_Android">
+        <span style="background: #F59E0B; color: #000; padding: 2px 6px; border-radius: 4px; font-size: 10px; font-weight: bold; margin-right: 6px;">AD</span>
+        <span style="font-size: 12px; font-weight: bold; color: #94A3B8;">Unity Ads: Banner_Android</span>
+    </div>
+    <script>
+        const UNITY_GAME_ID = "800387496";
+        const UNITY_PLACEMENT = "Banner_Android";
+        if (typeof unityAds !== 'undefined') {
+            unityAds.init({
+                gameId: UNITY_GAME_ID,
+                testMode: false,
+                onInitialized: function() {
+                    console.log("Unity Ads initialized");
+                    if (unityAds.loadBanner) {
+                        unityAds.loadBanner({
+                            placementId: UNITY_PLACEMENT,
+                            container: document.getElementById("banner-ad-container")
+                        });
+                    }
+                }
+            });
+        }
+    </script>
+</body>
+</html>
