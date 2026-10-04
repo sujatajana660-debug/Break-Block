@@ -1,6 +1,10 @@
 package com.example.ui.screens
 
+import android.app.Activity
 import androidx.activity.compose.BackHandler
+import androidx.compose.ui.platform.LocalContext
+import com.example.ads.UnityAdsManager
+import com.unity3d.ads.UnityAds
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -159,22 +163,56 @@ fun ClassicGameScreen(
             )
         }
 
+        val context = LocalContext.current
+        val activity = context as? Activity
+
         // 1. FULLSCREEN INTERSTITIAL AD ON GAME OVER
         if (uiState.isShowingInterstitialAd) {
-            FullscreenInterstitialAdOverlay(
-                score = uiState.score,
-                onAdDismissed = { viewModel.dismissInterstitialAd() }
-            )
+            var showFallbackOverlay by remember { mutableStateOf(false) }
+
+            androidx.compose.runtime.LaunchedEffect(Unit) {
+                if (activity != null && UnityAds.isInitialized) {
+                    UnityAdsManager.showInterstitialAd(
+                        activity = activity,
+                        onAdDismissed = { viewModel.dismissInterstitialAd() }
+                    )
+                } else {
+                    showFallbackOverlay = true
+                }
+            }
+
+            if (showFallbackOverlay) {
+                FullscreenInterstitialAdOverlay(
+                    score = uiState.score,
+                    onAdDismissed = { viewModel.dismissInterstitialAd() }
+                )
+            }
         }
 
         // 2. Fullscreen Rewarded Video Ad for Revive (active when clicking revive in game over dialog)
         if (uiState.isWatchingReviveAd) {
-            FullscreenReviveAdOverlay(
-                title = "REVIVE MATCH",
-                rewardDescription = "Watch full video ad to revive your match and clear the board center!",
-                onAdCompleted = { viewModel.completeReviveAd() },
-                onAdDismissed = { viewModel.dismissReviveAd() }
-            )
+            var showFallbackOverlay by remember { mutableStateOf(false) }
+
+            androidx.compose.runtime.LaunchedEffect(Unit) {
+                if (activity != null && UnityAds.isInitialized) {
+                    UnityAdsManager.showRewardedAd(
+                        activity = activity,
+                        onRewardGranted = { viewModel.completeReviveAd() },
+                        onAdFailed = { showFallbackOverlay = true }
+                    )
+                } else {
+                    showFallbackOverlay = true
+                }
+            }
+
+            if (showFallbackOverlay) {
+                FullscreenReviveAdOverlay(
+                    title = "REVIVE MATCH",
+                    rewardDescription = "Watch video or skip ad to instantly revive your match!",
+                    onAdCompleted = { viewModel.completeReviveAd() },
+                    onAdDismissed = { viewModel.completeReviveAd() }
+                )
+            }
         }
 
         // 3. Game Over Dialog (shown when not watching ad and not showing interstitial)
@@ -203,12 +241,28 @@ fun ClassicGameScreen(
         // Fullscreen Rewarded Ad for Claiming Extra Booster
         if (uiState.isWatchingBoosterAd) {
             val target = uiState.boosterAdTarget ?: com.example.model.BoosterType.BOMB
-            FullscreenReviveAdOverlay(
-                title = "CLAIM ${target.title.uppercase()}",
-                rewardDescription = "Watch full video ad to unlock +1 ${target.title} booster for this match!",
-                onAdCompleted = { viewModel.completeBoosterRewardedAd() },
-                onAdDismissed = { viewModel.dismissBoosterAd() }
-            )
+            var showFallbackOverlay by remember { mutableStateOf(false) }
+
+            androidx.compose.runtime.LaunchedEffect(Unit) {
+                if (activity != null && UnityAds.isInitialized) {
+                    UnityAdsManager.showRewardedAd(
+                        activity = activity,
+                        onRewardGranted = { viewModel.completeBoosterRewardedAd() },
+                        onAdFailed = { showFallbackOverlay = true }
+                    )
+                } else {
+                    showFallbackOverlay = true
+                }
+            }
+
+            if (showFallbackOverlay) {
+                FullscreenReviveAdOverlay(
+                    title = "CLAIM ${target.title.uppercase()}",
+                    rewardDescription = "Watch video or skip ad to unlock +1 ${target.title} booster for this match!",
+                    onAdCompleted = { viewModel.completeBoosterRewardedAd() },
+                    onAdDismissed = { viewModel.completeBoosterRewardedAd() }
+                )
+            }
         }
 
         // Settings Dialog

@@ -2,6 +2,10 @@ package com.example.ui.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -382,7 +386,94 @@ fun SettingsDialog(
                     )
                 }
 
-                Spacer(modifier = Modifier.height(20.dp))
+                Spacer(modifier = Modifier.height(16.dp))
+
+                // Unity Ads Network Status & Config Section
+                val context = androidx.compose.ui.platform.LocalContext.current
+                val isInitialized by com.example.ads.UnityAdsManager.isInitialized.collectAsStateWithLifecycle()
+                val initStatus by com.example.ads.UnityAdsManager.initializationStatus.collectAsStateWithLifecycle()
+                var currentTestMode by androidx.compose.runtime.remember { androidx.compose.runtime.mutableStateOf(com.example.ads.AdConfig.testMode) }
+
+                Card(
+                    shape = RoundedCornerShape(16.dp),
+                    colors = CardDefaults.cardColors(containerColor = Color(0xFF0F172A)),
+                    modifier = Modifier.fillMaxWidth().border(1.dp, Color(0xFF334155), RoundedCornerShape(16.dp))
+                ) {
+                    Column(modifier = Modifier.fillMaxWidth().padding(14.dp)) {
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Text(
+                                text = "🎮 Unity Ads Network",
+                                color = Color(0xFFFFD700),
+                                fontSize = 14.sp,
+                                fontWeight = FontWeight.Bold
+                            )
+                            Box(
+                                modifier = Modifier
+                                    .clip(RoundedCornerShape(6.dp))
+                                    .background(if (isInitialized) Color(0xFF065F46) else Color(0xFF7F1D1D))
+                                    .padding(horizontal = 8.dp, vertical = 2.dp)
+                            ) {
+                                Text(
+                                    text = if (isInitialized) "CONNECTED" else "CONNECTING",
+                                    color = if (isInitialized) Color(0xFF34D399) else Color(0xFFFCA5A5),
+                                    fontSize = 10.sp,
+                                    fontWeight = FontWeight.Bold
+                                )
+                            }
+                        }
+
+                        Spacer(modifier = Modifier.height(6.dp))
+                        Text(
+                            text = "Game ID: ${com.example.ads.AdConfig.UNITY_GAME_ID} • Org: ${com.example.ads.AdConfig.UNITY_ORGANIZATION_CORE_ID}",
+                            color = Color(0xFF94A3B8),
+                            fontSize = 11.sp
+                        )
+                        Text(
+                            text = "Banner: ${com.example.ads.AdConfig.UNITY_PLACEMENT_BANNER}\nRewarded: ${com.example.ads.AdConfig.UNITY_PLACEMENT_REWARDED}\nInterstitial: ${com.example.ads.AdConfig.UNITY_PLACEMENT_INTERSTITIAL}",
+                            color = Color(0xFF64748B),
+                            fontSize = 10.sp,
+                            lineHeight = 14.sp
+                        )
+
+                        Spacer(modifier = Modifier.height(8.dp))
+
+                        // Test Mode Switch
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Column {
+                                Text(
+                                    text = "Test Mode: ${if (currentTestMode) "ON" else "OFF (Live Ads)"}",
+                                    color = Color.White,
+                                    fontSize = 12.sp,
+                                    fontWeight = FontWeight.SemiBold
+                                )
+                                Text(
+                                    text = if (currentTestMode) "Serving Unity Test Video Ads" else "Serving Live Production Ads",
+                                    color = Color(0xFF94A3B8),
+                                    fontSize = 10.sp
+                                )
+                            }
+                            Switch(
+                                checked = currentTestMode,
+                                onCheckedChange = { isChecked ->
+                                    currentTestMode = isChecked
+                                    com.example.ads.UnityAdsManager.setTestMode(isChecked, context)
+                                },
+                                colors = SwitchDefaults.colors(checkedThumbColor = Color(0xFFF59E0B)),
+                                modifier = Modifier.testTag("toggle_ads_test_mode")
+                            )
+                        }
+                    }
+                }
+
+                Spacer(modifier = Modifier.height(16.dp))
 
                 Text(
                     text = "How to Play",

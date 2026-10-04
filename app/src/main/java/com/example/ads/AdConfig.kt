@@ -14,4 +14,7 @@ object AdConfig {
     const val UNITY_PLACEMENT_BANNER = "BP_Banner_Android"
     const val UNITY_PLACEMENT_INTERSTITIAL = "BP_Interstitial_Android"
     const val UNITY_PLACEMENT_REWARDED = "BP_Rewarded_Android"
+
+    // User explicitly stated: "ami test mode no korechi" (I set test mode to false/no)
+    var testMode: Boolean = false
 }

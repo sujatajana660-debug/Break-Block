@@ -35,6 +35,8 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+        // Initialize Unity Ads SDK with Game ID: 800387496
+        com.example.ads.UnityAdsManager.initialize(this)
         setContent {
             MyApplicationTheme {
                 Surface(
